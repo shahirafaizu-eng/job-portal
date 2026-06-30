@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Applicants — {{ job.title }}{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1>Applicants for "{{ job.title }}"</h1>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Resume</th><th>Cover Letter</th><th>Status</th><th>Applied</th><th>Update</th></tr></thead>
+      <tbody>
+        {% for a in applicants %}
+        <tr>
+          <td>{{ a.name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.phone or '-' }}</td>
+          <td>{% if a.resume_path %}<a href="{{ url_for('uploaded_file', filename=a.resume_path) }}" target="_blank">View</a>{% else %}-{% endif %}</td>
+          <td class="cover-cell">{{ a.cover_letter or '-' }}</td>
+          <td><span class="status status-{{ a.status }}">{{ a.status }}</span></td>
+          <td>{{ a.applied_at }}</td>
+          <td>
+            <form method="post" action="{{ url_for('update_application_status', app_id=a.id) }}">
+              <select name="status" onchange="this.form.submit()">
+                {% for s in ["applied","shortlisted","rejected","hired"] %}
+                <option value="{{ s }}" {% if a.status == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+              </select>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8">No applications received yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

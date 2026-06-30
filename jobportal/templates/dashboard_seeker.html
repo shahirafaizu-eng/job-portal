@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — RoyalJobs{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1>My Applications</h1>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Job</th><th>Company</th><th>Location</th><th>Status</th><th>Applied On</th></tr></thead>
+      <tbody>
+        {% for a in applications %}
+        <tr>
+          <td><a href="{{ url_for('job_detail', job_id=a.job_id) }}">{{ a.title }}</a></td>
+          <td>{{ a.company }}</td>
+          <td>{{ a.location }}</td>
+          <td><span class="status status-{{ a.status }}">{{ a.status }}</span></td>
+          <td>{{ a.applied_at }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">You haven't applied to any jobs yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h1 style="margin-top:40px;">Saved Jobs</h1>
+  <div class="job-grid">
+    {% for job in saved %}
+    <a class="job-card" href="{{ url_for('job_detail', job_id=job.id) }}">
+      <div class="job-card-top"><h3>{{ job.title }}</h3><span class="badge">{{ job.job_type }}</span></div>
+      <p class="company">{{ job.company }}</p>
+      <p class="meta">📍 {{ job.location }}</p>
+    </a>
+    {% else %}
+    <p>No saved jobs yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

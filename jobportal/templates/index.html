@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}RoyalJobs — Find Your Royal Career{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <h1>Find your <span>royal</span> career today</h1>
+    <p>Thousands of mass opportunities from top companies, all in one royal portal.</p>
+    <form action="{{ url_for('jobs') }}" method="get" class="search-form">
+      <input type="text" name="q" placeholder="Job title, keyword or company">
+      <input type="text" name="location" placeholder="Location">
+      <button type="submit" class="btn-primary">Search Jobs</button>
+    </form>
+    <div class="stats">
+      <div><strong>{{ total_jobs }}</strong><span>Active Jobs</span></div>
+      <div><strong>{{ total_companies }}</strong><span>Companies</span></div>
+      <div><strong>{{ total_seekers }}</strong><span>Job Seekers</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <h2>Latest Job Openings</h2>
+    <a href="{{ url_for('jobs') }}">View all →</a>
+  </div>
+  <div class="job-grid">
+    {% for job in jobs %}
+    <a class="job-card" href="{{ url_for('job_detail', job_id=job.id) }}">
+      <div class="job-card-top">
+        <h3>{{ job.title }}</h3>
+        <span class="badge">{{ job.job_type }}</span>
+      </div>
+      <p class="company">{{ job.company }}</p>
+      <p class="meta">📍 {{ job.location }}</p>
+      {% if job.salary_min and job.salary_max %}
+      <p class="meta">💰 {{ "{:,}".format(job.salary_min) }} - {{ "{:,}".format(job.salary_max) }}</p>
+      {% endif %}
+    </a>
+    {% else %}
+    <p>No jobs posted yet. Be the first to post!</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="container cta-inner">
+    <h2>Are you hiring?</h2>
+    <p>Post your job opening and reach thousands of qualified candidates.</p>
+    <a href="{{ url_for('register') }}" class="btn-light">Post a Job Now</a>
+  </div>
+</section>
+{% endblock %}
