@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}My Profile — RoyalJobs{% endblock %}
+{% block content %}
+<section class="container auth-section">
+  <div class="auth-card">
+    <h1>My Profile</h1>
+    <form method="post" class="auth-form">
+      <label>Name</label>
+      <input type="text" name="name" value="{{ user.name }}" required>
+
+      <label>Email</label>
+      <input type="email" value="{{ user.email }}" disabled>
+
+      {% if user.role == 'employer' %}
+      <label>Company Name</label>
+      <input type="text" name="company_name" value="{{ user.company_name or '' }}">
+      {% endif %}
+
+      <label>Phone</label>
+      <input type="text" name="phone" value="{{ user.phone or '' }}">
+
+      <label>Bio</label>
+      <textarea name="bio" rows="4">{{ user.bio or '' }}</textarea>
+
+      <button type="submit" class="btn-primary full-width">Save Changes</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

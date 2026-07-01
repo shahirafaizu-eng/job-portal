@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Royal Jobs{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="{{ url_for('index') }}" class="brand">👑 Royal<span>Jobs</span></a>
+    <nav class="nav-links">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('jobs') }}">Find Jobs</a>
+      {% if current_user %}
+        {% if current_user.role == 'employer' %}
+          <a href="{{ url_for('employer_dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('post_job') }}">Post a Job</a>
+        {% else %}
+          <a href="{{ url_for('seeker_dashboard') }}">Dashboard</a>
+        {% endif %}
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="{{ url_for('logout') }}" class="btn-ghost">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}" class="btn-primary-sm">Sign Up</a>
+      {% endif %}
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<div class="container flash-container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="brand">👑 Royal<span>Jobs</span></div>
+      <p>The mass and royal job portal — connecting talent with opportunity.</p>
+    </div>
+    <div>
+      <h4>For Job Seekers</h4>
+      <a href="{{ url_for('jobs') }}">Browse Jobs</a>
+      <a href="{{ url_for('register') }}">Create Account</a>
+    </div>
+    <div>
+      <h4>For Employers</h4>
+      <a href="{{ url_for('register') }}">Post a Job</a>
+      <a href="{{ url_for('login') }}">Employer Login</a>
+    </div>
+  </div>
+  <p class="copyright">© 2026 RoyalJobs Portal. All rights reserved.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

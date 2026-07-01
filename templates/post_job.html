@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{% if job %}Edit Job{% else %}Post a Job{% endif %} — RoyalJobs{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1>{% if job %}Edit Job{% else %}Post a New Job{% endif %}</h1>
+  <form method="post" class="form-card">
+    <div class="form-row">
+      <div>
+        <label>Job Title *</label>
+        <input type="text" name="title" required value="{{ job.title if job else '' }}">
+      </div>
+      <div>
+        <label>Company *</label>
+        <input type="text" name="company" required value="{{ job.company if job else current_user.company_name or '' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Location *</label>
+        <input type="text" name="location" required value="{{ job.location if job else '' }}">
+      </div>
+      <div>
+        <label>Job Type *</label>
+        <select name="job_type" required>
+          {% for t in ["Full-time","Part-time","Contract","Internship","Remote"] %}
+          <option value="{{ t }}" {% if job and job.job_type == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Category</label>
+        <input type="text" name="category" placeholder="e.g. IT, Marketing, Finance" value="{{ job.category if job else '' }}">
+      </div>
+      <div></div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Minimum Salary</label>
+        <input type="number" name="salary_min" value="{{ job.salary_min if job else '' }}">
+      </div>
+      <div>
+        <label>Maximum Salary</label>
+        <input type="number" name="salary_max" value="{{ job.salary_max if job else '' }}">
+      </div>
+    </div>
+    <label>Job Description *</label>
+    <textarea name="description" rows="6" required>{{ job.description if job else '' }}</textarea>
+
+    <label>Requirements</label>
+    <textarea name="requirements" rows="5">{{ job.requirements if job else '' }}</textarea>
+
+    {% if job %}
+    <label>Status</label>
+    <select name="status">
+      <option value="active" {% if job.status == 'active' %}selected{% endif %}>Active</option>
+      <option value="closed" {% if job.status == 'closed' %}selected{% endif %}>Closed</option>
+    </select>
+    {% endif %}
+
+    <button type="submit" class="btn-primary full-width">{% if job %}Save Changes{% else %}Post Job{% endif %}</button>
+  </form>
+</section>
+{% endblock %}
