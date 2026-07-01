@@ -30,7 +30,7 @@ app.config["SECRET_KEY"] = "royal-job-portal-secret-key-change-me"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # 5 MB
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ----------------------------------------------------------------------
 # Database helpers
