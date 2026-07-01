@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Apply — {{ job.title }}{% endblock %}
+{% block content %}
+<section class="container auth-section">
+  <div class="auth-card">
+    <h1>Apply for {{ job.title }}</h1>
+    <p class="meta">{{ job.company }} · 📍 {{ job.location }}</p>
+    <form method="post" enctype="multipart/form-data" class="auth-form">
+      <label for="resume">Resume (PDF/DOC/DOCX)</label>
+      <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
+
+      <label for="cover_letter">Cover Letter</label>
+      <textarea id="cover_letter" name="cover_letter" rows="6" placeholder="Tell the employer why you're a great fit..."></textarea>
+
+      <button type="submit" class="btn-primary full-width">Submit Application</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

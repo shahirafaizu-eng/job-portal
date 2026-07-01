@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Sign Up — RoyalJobs{% endblock %}
+{% block content %}
+<section class="container auth-section">
+  <div class="auth-card">
+    <h1>Create your account</h1>
+    <form method="post" class="auth-form">
+      <label>I am a</label>
+      <div class="role-toggle">
+        <label><input type="radio" name="role" value="seeker" checked onclick="document.getElementById('companyField').style.display='none'"> Job Seeker</label>
+        <label><input type="radio" name="role" value="employer" onclick="document.getElementById('companyField').style.display='block'"> Employer</label>
+      </div>
+
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <div id="companyField" style="display:none;">
+        <label for="company_name">Company Name</label>
+        <input type="text" id="company_name" name="company_name">
+      </div>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required minlength="6">
+
+      <button type="submit" class="btn-primary full-width">Create Account</button>
+    </form>
+    <p class="auth-footer">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+  </div>
+</section>
+{% endblock %}

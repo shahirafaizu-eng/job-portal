@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ job.title }} — RoyalJobs{% endblock %}
+{% block content %}
+<section class="container section job-detail">
+  <div class="job-detail-head">
+    <div>
+      <h1>{{ job.title }}</h1>
+      <p class="company-line">{{ job.company }} · 📍 {{ job.location }} · <span class="badge">{{ job.job_type }}</span></p>
+      {% if job.salary_min and job.salary_max %}
+      <p class="meta">💰 {{ "{:,}".format(job.salary_min) }} - {{ "{:,}".format(job.salary_max) }} / year</p>
+      {% endif %}
+      {% if job.category %}<p class="meta">🏷️ {{ job.category }}</p>{% endif %}
+      <p class="meta">Posted on {{ job.created_at }}</p>
+    </div>
+    <div class="job-actions">
+      {% if current_user and current_user.role == 'seeker' %}
+        {% if already_applied %}
+          <span class="btn-disabled">✓ Applied</span>
+        {% else %}
+          <a href="{{ url_for('apply_job', job_id=job.id) }}" class="btn-primary">Apply Now</a>
+        {% endif %}
+        {% if already_saved %}
+        <form method="post" action="{{ url_for('unsave_job', job_id=job.id) }}">
+          <button type="submit" class="btn-ghost">★ Saved</button>
+        </form>
+        {% else %}
+        <form method="post" action="{{ url_for('save_job', job_id=job.id) }}">
+          <button type="submit" class="btn-ghost">☆ Save Job</button>
+        </form>
+        {% endif %}
+      {% elif not current_user %}
+        <a href="{{ url_for('login', next=request.path) }}" class="btn-primary">Login to Apply</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="job-detail-body">
+    <h2>Job Description</h2>
+    <p>{{ job.description | replace('\n', '<br>') | safe }}</p>
+
+    {% if job.requirements %}
+    <h2>Requirements</h2>
+    <p>{{ job.requirements | replace('\n', '<br>') | safe }}</p>
+    {% endif %}
+
+    <h2>Contact</h2>
+    <p>Email: {{ job.employer_email }}{% if job.employer_phone %} · Phone: {{ job.employer_phone }}{% endif %}</p>
+  </div>
+</section>
+{% endblock %}
